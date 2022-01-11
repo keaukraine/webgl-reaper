@@ -1,0 +1,1 @@
+{"version":3,"file":"DiffuseOneChannelShader.js","sourceRoot":"","sources":["../../../src/shaders/DiffuseOneChannelShader.ts"],"names":[],"mappings":";;;AAAA,qDAAgD;AAGhD,MAAa,uBAAwB,SAAQ,+BAAa;IACtD,QAAQ;QACJ,KAAK,CAAC,QAAQ,EAAE,CAAC;QAEjB,IAAI,CAAC,kBAAkB,GAAG;;;;;;;cAOpB,CAAC;IACX,CAAC;CACJ;AAbD,0DAaC"}
