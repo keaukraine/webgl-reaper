@@ -12,6 +12,7 @@ Works in latest Chrome, Firefox, Safari and Edge.
 * WebGL initialization code is based on http://learningwebgl.com/ tutorials
 * Google Play and the Google Play logo are trademarks of Google LLC.
 * Loading spinner is from https://loading.io/css/
+* Reduced colors filter is based on Q1K3 game code https://github.com/phoboslab/q1k3
 
 # License
 
