@@ -562,11 +562,10 @@ export class Renderer extends BaseRenderer {
     }
 
     async loadData(): Promise<void> {
-        await Promise.all([
+        const promiseModels = Promise.all([
             this.fmSky.load("data/models/sky", this.gl),
             this.fmStripe.load("data/models/stripe-optimized-1", this.gl),
             this.fmDust.load("data/models/particles_20", this.gl),
-
             this.fmBody.load("data/models/body", this.gl),
             this.fmScythe.load("data/models/scythe", this.gl),
             this.fmCloth.load("data/models/cloth", this.gl),
@@ -574,24 +573,7 @@ export class Renderer extends BaseRenderer {
             this.fmSmoke.load("data/models/smoke100", this.gl)
         ]);
 
-        [
-            this.textureSky,
-            this.textureParticle,
-            this.textureDisplacement,
-            this.textureDust,
-
-            this.textureBody,
-            this.textureCloth,
-            this.textureBodyAnim,
-            this.textureBodyNormalsAnim,
-            this.textureScytheAnim,
-            this.textureScytheNormalsAnim,
-            this.textureClothAnim,
-            this.textureEyesAnim,
-            this.textureEyes,
-            this.textureSmoke,
-            this.textureVignette
-        ] = await Promise.all([
+        const promiseTextures = Promise.all([
             UncompressedTextureLoader.load("data/textures/sky.webp", this.gl, undefined, undefined, false),
             UncompressedTextureLoader.load("data/textures/particle1.webp", this.gl, undefined, undefined, false),
             UncompressedTextureLoader.load("data/textures/displacement.webp", this.gl, undefined, undefined, false),
@@ -643,10 +625,38 @@ export class Renderer extends BaseRenderer {
                 this.gl.NEAREST, this.gl.NEAREST,
                 true
             ),
-            await UncompressedTextureLoader.load("data/textures/eye_alpha.webp", this.gl),
-            await UncompressedTextureLoader.load("data/textures/smoke.webp", this.gl),
-            await UncompressedTextureLoader.load("data/textures/vignette.webp", this.gl)
+            UncompressedTextureLoader.load("data/textures/eye_alpha.webp", this.gl),
+            UncompressedTextureLoader.load("data/textures/smoke.webp", this.gl),
+            UncompressedTextureLoader.load("data/textures/vignette.webp", this.gl)
         ]);
+
+        const [models, textures] = await Promise.all([promiseModels, promiseTextures]);
+        [
+            this.textureSky,
+            this.textureParticle,
+            this.textureDisplacement,
+            this.textureDust,
+            this.textureBody,
+            this.textureCloth,
+            this.textureBodyAnim,
+            this.textureBodyNormalsAnim,
+            this.textureScytheAnim,
+            this.textureScytheNormalsAnim,
+            this.textureClothAnim,
+            this.textureEyesAnim,
+            this.textureEyes,
+            this.textureSmoke,
+            this.textureVignette
+        ] = textures;        
+
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.textureBody);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR_MIPMAP_LINEAR);
+        this.gl.generateMipmap(this.gl.TEXTURE_2D);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.textureCloth);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR_MIPMAP_LINEAR);
+        this.gl.generateMipmap(this.gl.TEXTURE_2D);
 
         this.initOffscreen();
         this.initVignette();

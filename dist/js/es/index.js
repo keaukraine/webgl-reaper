@@ -123,8 +123,10 @@ class FullModel {
      * @returns Promise which resolves when model is loaded.
      */
     async load(url, gl) {
-        const dataIndices = await BinaryDataLoader.load(url + "-indices.bin");
-        const dataStrides = await BinaryDataLoader.load(url + "-strides.bin");
+        const [dataIndices, dataStrides] = await Promise.all([
+            BinaryDataLoader.load(`${url}-indices.bin`),
+            BinaryDataLoader.load(`${url}-strides.bin`)
+        ]);
         console.log(`Loaded ${url}-indices.bin (${dataIndices.byteLength} bytes)`);
         console.log(`Loaded ${url}-strides.bin (${dataStrides.byteLength} bytes)`);
         this.bufferIndices = gl.createBuffer();
@@ -3638,7 +3640,7 @@ class Renderer extends BaseRenderer {
     }
     async loadData() {
         var _a, _b;
-        await Promise.all([
+        const promiseModels = Promise.all([
             this.fmSky.load("data/models/sky", this.gl),
             this.fmStripe.load("data/models/stripe-optimized-1", this.gl),
             this.fmDust.load("data/models/particles_20", this.gl),
@@ -3648,6 +3650,24 @@ class Renderer extends BaseRenderer {
             this.fmEyes.load("data/models/eyes", this.gl),
             this.fmSmoke.load("data/models/smoke100", this.gl)
         ]);
+        const promiseTextures = Promise.all([
+            UncompressedTextureLoader.load("data/textures/sky.webp", this.gl, undefined, undefined, false),
+            UncompressedTextureLoader.load("data/textures/particle1.webp", this.gl, undefined, undefined, false),
+            UncompressedTextureLoader.load("data/textures/displacement.webp", this.gl, undefined, undefined, false),
+            UncompressedTextureLoader.load("data/textures/dust.webp", this.gl, this.gl.LINEAR, this.gl.LINEAR, false),
+            UncompressedTextureLoader.load(`data/textures/body-${this.PRESET.bodySuffix}.webp`, this.gl, this.gl.LINEAR, this.gl.LINEAR, false),
+            UncompressedTextureLoader.load(`data/textures/cloth-${this.PRESET.clothSuffix}.webp`, this.gl, this.gl.LINEAR, this.gl.LINEAR, false),
+            this.loadFloatingPointTexture(`data/textures/anims/${this.currentAnimation}/body-positions.rgb.fp16`, this.gl, this.animationsBody[this.currentAnimation].textureWidth, this.animationsBody[this.currentAnimation].textureHeight, this.gl.NEAREST, this.gl.NEAREST, true),
+            this.loadFloatingPointTexture(`data/textures/anims/${this.currentAnimation}/body-normals.rgb.s8`, this.gl, this.animationsBody[this.currentAnimation].textureWidth, this.animationsBody[this.currentAnimation].textureHeight, this.gl.NEAREST, this.gl.NEAREST, true, "snorm8"),
+            this.loadFloatingPointTexture(`data/textures/anims/${this.currentAnimation}/scythe-positions.rgb.fp16`, this.gl, this.animationsScythe[this.currentAnimation].textureWidth, this.animationsScythe[this.currentAnimation].textureHeight, this.gl.NEAREST, this.gl.NEAREST, true),
+            this.loadFloatingPointTexture(`data/textures/anims/${this.currentAnimation}/scythe-normals.rgb.s8`, this.gl, this.animationsScythe[this.currentAnimation].textureWidth, this.animationsScythe[this.currentAnimation].textureHeight, this.gl.NEAREST, this.gl.NEAREST, true, "snorm8"),
+            this.loadFloatingPointTexture(`data/textures/anims/${this.currentAnimation}/cloth-positions.rgb.fp16`, this.gl, this.animationsCloth[this.currentAnimation].textureWidth, this.animationsCloth[this.currentAnimation].textureHeight, this.gl.NEAREST, this.gl.NEAREST, true),
+            this.loadFloatingPointTexture(`data/textures/anims/${this.currentAnimation}/eyes.rgb.fp16`, this.gl, this.animationsEyes[this.currentAnimation].textureWidth, this.animationsEyes[this.currentAnimation].textureHeight, this.gl.NEAREST, this.gl.NEAREST, true),
+            UncompressedTextureLoader.load("data/textures/eye_alpha.webp", this.gl),
+            UncompressedTextureLoader.load("data/textures/smoke.webp", this.gl),
+            UncompressedTextureLoader.load("data/textures/vignette.webp", this.gl)
+        ]);
+        const [models, textures] = await Promise.all([promiseModels, promiseTextures]);
         [
             this.textureSky,
             this.textureParticle,
@@ -3664,23 +3684,15 @@ class Renderer extends BaseRenderer {
             this.textureEyes,
             this.textureSmoke,
             this.textureVignette
-        ] = await Promise.all([
-            UncompressedTextureLoader.load("data/textures/sky.webp", this.gl, undefined, undefined, false),
-            UncompressedTextureLoader.load("data/textures/particle1.webp", this.gl, undefined, undefined, false),
-            UncompressedTextureLoader.load("data/textures/displacement.webp", this.gl, undefined, undefined, false),
-            UncompressedTextureLoader.load("data/textures/dust.webp", this.gl, this.gl.LINEAR, this.gl.LINEAR, false),
-            UncompressedTextureLoader.load(`data/textures/body-${this.PRESET.bodySuffix}.webp`, this.gl, this.gl.LINEAR, this.gl.LINEAR, false),
-            UncompressedTextureLoader.load(`data/textures/cloth-${this.PRESET.clothSuffix}.webp`, this.gl, this.gl.LINEAR, this.gl.LINEAR, false),
-            this.loadFloatingPointTexture(`data/textures/anims/${this.currentAnimation}/body-positions.rgb.fp16`, this.gl, this.animationsBody[this.currentAnimation].textureWidth, this.animationsBody[this.currentAnimation].textureHeight, this.gl.NEAREST, this.gl.NEAREST, true),
-            this.loadFloatingPointTexture(`data/textures/anims/${this.currentAnimation}/body-normals.rgb.s8`, this.gl, this.animationsBody[this.currentAnimation].textureWidth, this.animationsBody[this.currentAnimation].textureHeight, this.gl.NEAREST, this.gl.NEAREST, true, "snorm8"),
-            this.loadFloatingPointTexture(`data/textures/anims/${this.currentAnimation}/scythe-positions.rgb.fp16`, this.gl, this.animationsScythe[this.currentAnimation].textureWidth, this.animationsScythe[this.currentAnimation].textureHeight, this.gl.NEAREST, this.gl.NEAREST, true),
-            this.loadFloatingPointTexture(`data/textures/anims/${this.currentAnimation}/scythe-normals.rgb.s8`, this.gl, this.animationsScythe[this.currentAnimation].textureWidth, this.animationsScythe[this.currentAnimation].textureHeight, this.gl.NEAREST, this.gl.NEAREST, true, "snorm8"),
-            this.loadFloatingPointTexture(`data/textures/anims/${this.currentAnimation}/cloth-positions.rgb.fp16`, this.gl, this.animationsCloth[this.currentAnimation].textureWidth, this.animationsCloth[this.currentAnimation].textureHeight, this.gl.NEAREST, this.gl.NEAREST, true),
-            this.loadFloatingPointTexture(`data/textures/anims/${this.currentAnimation}/eyes.rgb.fp16`, this.gl, this.animationsEyes[this.currentAnimation].textureWidth, this.animationsEyes[this.currentAnimation].textureHeight, this.gl.NEAREST, this.gl.NEAREST, true),
-            await UncompressedTextureLoader.load("data/textures/eye_alpha.webp", this.gl),
-            await UncompressedTextureLoader.load("data/textures/smoke.webp", this.gl),
-            await UncompressedTextureLoader.load("data/textures/vignette.webp", this.gl)
-        ]);
+        ] = textures;
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.textureBody);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR_MIPMAP_LINEAR);
+        this.gl.generateMipmap(this.gl.TEXTURE_2D);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.textureCloth);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR_MIPMAP_LINEAR);
+        this.gl.generateMipmap(this.gl.TEXTURE_2D);
         this.initOffscreen();
         this.initVignette();
         this.loaded = true;
