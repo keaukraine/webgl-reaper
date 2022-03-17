@@ -1,3 +1,5 @@
+![WebGL Reaper demo](https://user-images.githubusercontent.com/414072/158831545-43da05bb-f2fd-46c3-9d3d-2f9745ca6069.jpg)
+
 # Grim Reaper WebGL Demo
 
 Live demo page is available here: https://keaukraine.github.io/webgl-reaper/index.html
