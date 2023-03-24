@@ -4,6 +4,8 @@
 
 Live demo page is available here: https://keaukraine.github.io/webgl-reaper/index.html
 
+Article explaining rendering pipeline and optimizations used in this demo: https://keaukraine.medium.com/webgl-grim-reaper-demo-fa81a5f9b916
+
 Works in latest Chrome, Firefox, Safari and Edge.
 
 # Used Libraries
