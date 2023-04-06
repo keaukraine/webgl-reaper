@@ -28,7 +28,6 @@ export declare class Renderer extends BaseRenderer {
     private textureScytheNormalsAnim;
     private textureClothAnim;
     private textureEyesAnim;
-    private textureVignette;
     private shaderDiffuse;
     private shaderDiffuseOneChannel;
     private shaderDiffuseAnimatedTexture;
@@ -132,7 +131,6 @@ export declare class Renderer extends BaseRenderer {
     /** Issues actual draw calls */
     drawScene(): void;
     drawTestDepth(): void;
-    drawSceneVignette(): void;
     drawVignetteObject(): void;
     drawVignette(shader: DiffuseShader): void;
     private drawDepthObjects;

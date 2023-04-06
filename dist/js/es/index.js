@@ -3714,8 +3714,7 @@ class Renderer extends BaseRenderer {
             this.loadFloatingPointTexture(`data/textures/anims/${this.currentAnimation}/cloth-positions.rgb.fp16`, this.gl, this.animationsCloth[this.currentAnimation].textureWidth, this.animationsCloth[this.currentAnimation].textureHeight, this.gl.NEAREST, this.gl.NEAREST, true),
             this.loadFloatingPointTexture(`data/textures/anims/${this.currentAnimation}/eyes.rgb.fp16`, this.gl, this.animationsEyes[this.currentAnimation].textureWidth, this.animationsEyes[this.currentAnimation].textureHeight, this.gl.NEAREST, this.gl.NEAREST, true),
             UncompressedTextureLoader.load("data/textures/eye_alpha.webp", this.gl),
-            UncompressedTextureLoader.load("data/textures/smoke.webp", this.gl),
-            UncompressedTextureLoader.load("data/textures/vignette.webp", this.gl)
+            UncompressedTextureLoader.load("data/textures/smoke.webp", this.gl)
         ]);
         const [models, textures] = await Promise.all([promiseModels, promiseTextures]);
         [
@@ -3732,8 +3731,7 @@ class Renderer extends BaseRenderer {
             this.textureClothAnim,
             this.textureEyesAnim,
             this.textureEyes,
-            this.textureSmoke,
-            this.textureVignette
+            this.textureSmoke
         ] = textures;
         this.gl.bindTexture(this.gl.TEXTURE_2D, this.textureBody);
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
@@ -3924,11 +3922,6 @@ class Renderer extends BaseRenderer {
         this.shaderDiffuse.use();
         this.setTexture2D(0, this.textureOffscreenDepth, this.shaderDiffuse.sTexture);
         this.drawVignette(this.shaderDiffuse);
-    }
-    drawSceneVignette() {
-        this.shaderDiffuseOneChannel.use();
-        this.setTexture2D(0, this.textureVignette, this.shaderDiffuseOneChannel.sTexture);
-        this.drawVignette(this.shaderDiffuseOneChannel);
     }
     drawVignetteObject() {
         if (this.shaderVignette === undefined) {
