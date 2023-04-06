@@ -13,6 +13,7 @@ export declare class Renderer extends BaseRenderer {
     private fmCloth;
     private fmEyes;
     private fmSmoke;
+    private fmVignette;
     private textureSky;
     private textureParticle;
     private textureDisplacement;
@@ -43,6 +44,7 @@ export declare class Renderer extends BaseRenderer {
     private shaderSoftDiffuseColoredAlpha;
     private shaderSky;
     private shaderDepthAnimated;
+    private shaderVignette;
     private textureOffscreenColor;
     private textureOffscreenDepth;
     private fboOffscreen;
@@ -112,7 +114,7 @@ export declare class Renderer extends BaseRenderer {
     onAfterInit(): void;
     onInitError(): void;
     initShaders(): void;
-    loadFloatingPointTexture(url: string, gl: WebGL2RenderingContext, width: number, height: number, minFilter?: number, magFilter?: number, clamp?: boolean, type?: "fp16" | "snorm8"): Promise<WebGLTexture>;
+    loadFloatingPointTexture(url: string, gl: WebGL2RenderingContext, width: number, height: number, minFilter?: number | undefined, magFilter?: number | undefined, clamp?: boolean, type?: "fp16" | "snorm8"): Promise<WebGLTexture>;
     loadData(): Promise<void>;
     protected initOffscreen(): void;
     checkGlError(operation: string): void;
@@ -131,6 +133,7 @@ export declare class Renderer extends BaseRenderer {
     drawScene(): void;
     drawTestDepth(): void;
     drawSceneVignette(): void;
+    drawVignetteObject(): void;
     drawVignette(shader: DiffuseShader): void;
     private drawDepthObjects;
     private drawSceneObjects;

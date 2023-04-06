@@ -20,6 +20,7 @@ const DiffuseAnimatedTextureChunkedColoredShader_1 = require("./shaders/DiffuseA
 const SkyShader_1 = require("./shaders/SkyShader");
 const DiffuseOneChannelShader_1 = require("./shaders/DiffuseOneChannelShader");
 const DepthAnimatedTextureChunkedShader_1 = require("./shaders/DepthAnimatedTextureChunkedShader");
+const VertexVignetteShader_1 = require("./shaders/VertexVignetteShader");
 const FOV_LANDSCAPE = 60.0; // FOV for landscape
 const FOV_PORTRAIT = 80.0; // FOV for portrait
 const YAW_COEFF_NORMAL = 200.0; // camera rotation time
@@ -51,6 +52,7 @@ class Renderer extends webgl_framework_1.BaseRenderer {
         this.fmCloth = new webgl_framework_1.FullModel();
         this.fmEyes = new webgl_framework_1.FullModel();
         this.fmSmoke = new webgl_framework_1.FullModel();
+        this.fmVignette = new webgl_framework_1.FullModel();
         this.Z_NEAR = 1.0;
         this.Z_FAR = 110.0;
         this.timerDustRotation = 0;
@@ -426,6 +428,7 @@ class Renderer extends webgl_framework_1.BaseRenderer {
         this.shaderSoftDiffuseColoredAlpha = new SoftDiffuseColoredAlphaShader_1.SoftDiffuseColoredAlphaShader(this.gl);
         this.shaderSky = new SkyShader_1.SkyShader(this.gl);
         this.shaderDepthAnimated = new DepthAnimatedTextureChunkedShader_1.DepthAnimatedTextureChunkedShader(this.gl);
+        this.shaderVignette = new VertexVignetteShader_1.VertexVignetteShader(this.gl);
     }
     async loadFloatingPointTexture(url, gl, width, height, minFilter = gl.LINEAR, magFilter = gl.LINEAR, clamp = false, type = "fp16") {
         const texture = gl.createTexture();
@@ -468,7 +471,8 @@ class Renderer extends webgl_framework_1.BaseRenderer {
             this.fmScythe.load("data/models/scythe", this.gl),
             this.fmCloth.load("data/models/cloth", this.gl),
             this.fmEyes.load("data/models/eyes", this.gl),
-            this.fmSmoke.load("data/models/smoke100", this.gl)
+            this.fmSmoke.load("data/models/smoke100", this.gl),
+            this.fmVignette.load("data/models/vignette-round-vntao", this.gl)
         ]);
         const promiseTextures = Promise.all([
             webgl_framework_1.UncompressedTextureLoader.load("data/textures/sky.webp", this.gl, undefined, undefined, false),
@@ -700,6 +704,15 @@ class Renderer extends webgl_framework_1.BaseRenderer {
         this.setTexture2D(0, this.textureVignette, this.shaderDiffuseOneChannel.sTexture);
         this.drawVignette(this.shaderDiffuseOneChannel);
     }
+    drawVignetteObject() {
+        if (this.shaderVignette === undefined) {
+            return;
+        }
+        this.shaderVignette.use();
+        this.gl.uniform4f(this.shaderVignette.color0, 0.33, 0.33, 0.33, 1);
+        this.gl.uniform4f(this.shaderVignette.color1, 1.0, 1.0, 1.0, 1);
+        this.shaderVignette.drawVignette(this, this.fmVignette);
+    }
     drawVignette(shader) {
         this.unbindBuffers();
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.mTriangleVerticesVignette);
@@ -790,12 +803,6 @@ class Renderer extends webgl_framework_1.BaseRenderer {
         this.shaderSky.use();
         this.setTexture2D(0, this.textureSky, this.shaderSky.sTexture);
         this.setTexture2D(1, this.textureDisplacement, this.shaderSky.sDisplacement);
-        this.shaderSky.setColor(1, 1, 1, 1);
-        this.shaderSky.setColor(0.7, 0.6, 0.4, 1); // sepia
-        this.shaderSky.setColor(0.51, 0.72, 0.9, 1); // blue
-        this.shaderSky.setColor(0.65, 0.35, 0.32, 1); // red
-        this.shaderSky.setColor(0.38, 0.60, 0.4, 1); // green
-        this.shaderSky.setColor(0.72, 0.7, 0.43, 1); // yellow
         this.shaderSky.setColor(this.PRESET.colorSky.r, this.PRESET.colorSky.g, this.PRESET.colorSky.b, this.PRESET.colorSky.a);
         this.gl.uniform1f(this.shaderSky.uTime, this.timerSkyAnimation);
         this.gl.uniform1f(this.shaderSky.uLightning, light * 5);
@@ -808,7 +815,8 @@ class Renderer extends webgl_framework_1.BaseRenderer {
         this.gl.blendFunc(this.gl.ONE, this.gl.ONE);
         this.drawDust(light);
         this.gl.blendFunc(this.gl.DST_COLOR, this.gl.SRC_COLOR);
-        this.drawSceneVignette();
+        this.gl.blendFunc(this.gl.ZERO, this.gl.SRC_COLOR);
+        this.drawVignetteObject();
         this.gl.disable(this.gl.BLEND);
         this.gl.depthMask(true);
     }
