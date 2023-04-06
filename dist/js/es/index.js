@@ -1,3 +1,5 @@
+
+(function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(window.document);
 class FullScreenUtils {
     /** Enters fullscreen. */
     enterFullScreen() {
@@ -1697,6 +1699,7 @@ class DiffuseShader extends BaseShader {
         renderer.checkGlError("DiffuseShader glDrawElements");
     }
 }
+//# sourceMappingURL=webgl-framework.es6.js.map
 
 /**
  * Common utilities
@@ -2486,6 +2489,7 @@ class DiffuseColoredShader extends DiffuseShader {
         super.drawModel(renderer, model, tx, ty, tz, rx, ry, rz, sx, sy, sz);
     }
 }
+//# sourceMappingURL=DiffuseColoredShader.js.map
 
 class BendShader extends DiffuseShader {
     constructor() {
@@ -2549,12 +2553,14 @@ class BendShader extends DiffuseShader {
         super.drawModel(renderer, model, tx, ty, tz, rx, ry, rz, sx, sy, sz);
     }
 }
+//# sourceMappingURL=BendShader.js.map
 
 var CameraMode;
 (function (CameraMode) {
     CameraMode[CameraMode["Rotating"] = 0] = "Rotating";
     CameraMode[CameraMode["Random"] = 1] = "Random";
 })(CameraMode || (CameraMode = {}));
+//# sourceMappingURL=CameraMode.js.map
 
 class CameraPositionInterpolator {
     constructor() {
@@ -2641,6 +2647,7 @@ class CameraPositionInterpolator {
         translate(this.matrix, this.matrix, [-this._cameraPosition[0], -this._cameraPosition[1], -this._cameraPosition[2]]);
     }
 }
+//# sourceMappingURL=CameraPositionInterpolator.js.map
 
 class DiffuseAlphaShader extends DiffuseShader {
     fillCode() {
@@ -2662,6 +2669,7 @@ class DiffuseAlphaShader extends DiffuseShader {
         this.sAlphaTexture = this.getUniform("sAlphaTexture");
     }
 }
+//# sourceMappingURL=DiffuseAlphaShader.js.map
 
 class DiffuseAnimatedTextureShader extends DiffuseShader {
     // Attributes are numbers.
@@ -2717,6 +2725,7 @@ class DiffuseAnimatedTextureShader extends DiffuseShader {
         renderer.checkGlError("DiffuseShader glDrawElements");
     }
 }
+//# sourceMappingURL=DiffuseAnimatedTextureShader.js.map
 
 class DiffuseAnimatedTextureChunkedShader extends DiffuseAnimatedTextureShader {
     // Attributes are numbers.
@@ -2770,6 +2779,7 @@ class DiffuseAnimatedTextureChunkedShader extends DiffuseAnimatedTextureShader {
         this.uTexelHeight = this.getUniform("uTexelHeight");
     }
 }
+//# sourceMappingURL=DiffuseAnimatedTextureChunkedShader.js.map
 
 class TextureAnimationChunked {
     constructor(textureWidth, vertices, frames) {
@@ -2822,6 +2832,7 @@ class TextureAnimationChunked {
         return this.m_texelHeight * timer * (this.frames - 1) + this.m_texelHalfHeight;
     }
 }
+//# sourceMappingURL=TextureAnimationChunked.js.map
 
 class PointSpriteColoredShader extends BaseShader {
     fillCode() {
@@ -2856,6 +2867,7 @@ class PointSpriteColoredShader extends BaseShader {
         this.color = this.getUniform("color");
     }
 }
+//# sourceMappingURL=PointSpriteColoredShader.js.map
 
 class AtAnimatedTextureChunkedShader extends DiffuseAnimatedTextureChunkedShader {
     fillCode() {
@@ -2875,6 +2887,7 @@ class AtAnimatedTextureChunkedShader extends DiffuseAnimatedTextureChunkedShader
             "}";
     }
 }
+//# sourceMappingURL=AtAnimatedTextureChunkedShader.js.map
 
 class LitAnimatedTextureChunkedShader extends DiffuseAnimatedTextureChunkedShader {
     fillCode() {
@@ -2953,6 +2966,7 @@ class LitAnimatedTextureChunkedShader extends DiffuseAnimatedTextureChunkedShade
         this.uLightIntensity = this.getUniform("uLightIntensity");
     }
 }
+//# sourceMappingURL=LitAnimatedTextureChunkedShader.js.map
 
 class SoftDiffuseColoredShader extends DiffuseShader {
     fillCode() {
@@ -3004,6 +3018,7 @@ class SoftDiffuseColoredShader extends DiffuseShader {
         this.color = this.getUniform("color");
     }
 }
+//# sourceMappingURL=SoftDiffuseColoredShader.js.map
 
 class SoftDiffuseColoredAlphaShader extends SoftDiffuseColoredShader {
     fillCode() {
@@ -3046,6 +3061,7 @@ class SoftDiffuseColoredAlphaShader extends SoftDiffuseColoredShader {
         this.color = this.getUniform("color");
     }
 }
+//# sourceMappingURL=SoftDiffuseColoredAlphaShader.js.map
 
 class DiffuseAnimatedTextureChunkedColoredShader extends DiffuseAnimatedTextureChunkedShader {
     fillCode() {
@@ -3066,6 +3082,7 @@ class DiffuseAnimatedTextureChunkedColoredShader extends DiffuseAnimatedTextureC
         this.uColor = this.getUniform("uColor");
     }
 }
+//# sourceMappingURL=DiffuseAnimatedTextureChunkedColoredShader.js.map
 
 class SkyShader extends DiffuseColoredShader {
     // Attributes are numbers.
@@ -3117,6 +3134,7 @@ class SkyShader extends DiffuseColoredShader {
         super.drawModel(renderer, model, tx, ty, tz, rx, ry, rz, sx, sy, sz);
     }
 }
+//# sourceMappingURL=SkyShader.js.map
 
 class DiffuseOneChannelShader extends DiffuseShader {
     fillCode() {
@@ -3131,6 +3149,7 @@ class DiffuseOneChannelShader extends DiffuseShader {
             }`;
     }
 }
+//# sourceMappingURL=DiffuseOneChannelShader.js.map
 
 class DepthAnimatedTextureChunkedShader extends BaseShader {
     fillCode() {
@@ -3199,6 +3218,61 @@ class DepthAnimatedTextureChunkedShader extends BaseShader {
         renderer.checkGlError("DiffuseShader glDrawElements");
     }
 }
+//# sourceMappingURL=DepthAnimatedTextureChunkedShader.js.map
+
+class VertexVignetteShader extends BaseShader {
+    fillCode() {
+        this.vertexShaderCode = `uniform mat4 view_proj_matrix;
+            attribute vec4 rm_Vertex;
+            attribute mediump float aAO;
+
+            uniform mediump vec4 color0;
+            uniform mediump vec4 color1;
+            varying mediump vec4 vAO;
+
+            const float GAMMA = 1.0 / 2.2;
+
+            void main() {
+              gl_Position = view_proj_matrix * rm_Vertex;
+            //   float ao = pow(smoothstep(0., 1., aAO), GAMMA);
+            //   float ao = pow(aAO, GAMMA);
+              float ao = aAO;
+              vAO = mix(color0, color1, ao);
+            }`;
+        this.fragmentShaderCode = `precision mediump float;
+            varying vec4 vAO;
+
+            const float GAMMA = 1.0 / 2.2;
+            // const float GAMMA = 1.0;
+            const vec4 GAMMA_VEC = vec4(GAMMA, GAMMA, GAMMA, 1.0);
+
+            void main() {
+              gl_FragColor = pow(smoothstep(0., 1., vAO), GAMMA_VEC);
+            }`;
+    }
+    fillUniformsAttributes() {
+        this.view_proj_matrix = this.getUniform("view_proj_matrix");
+        this.color0 = this.getUniform("color0");
+        this.color1 = this.getUniform("color1");
+        this.rm_Vertex = this.getAttrib("rm_Vertex");
+        this.rm_AO = this.getAttrib("aAO");
+    }
+    drawVignette(renderer, model) {
+        if (this.rm_Vertex === undefined || this.rm_AO === undefined || this.view_proj_matrix === undefined) {
+            return;
+        }
+        const gl = renderer.gl;
+        model.bindBuffers(gl);
+        gl.enableVertexAttribArray(this.rm_Vertex);
+        gl.enableVertexAttribArray(this.rm_AO);
+        gl.vertexAttribPointer(this.rm_Vertex, 3, gl.HALF_FLOAT, false, 8, 0);
+        gl.vertexAttribPointer(this.rm_AO, 1, gl.UNSIGNED_BYTE, true, 8, 6);
+        gl.uniformMatrix4fv(this.view_proj_matrix, false, renderer.getOrthoMatrix());
+        gl.drawElements(gl.TRIANGLES, model.getNumIndices() * 3, gl.UNSIGNED_SHORT, 0);
+        renderer.checkGlError("VertexVignetteShader glDrawElements");
+    }
+}
+//# sourceMappingURL=VertexVignetteShader.js.map
 
 const FOV_LANDSCAPE = 60.0; // FOV for landscape
 const FOV_PORTRAIT = 80.0; // FOV for portrait
@@ -3231,6 +3305,7 @@ class Renderer extends BaseRenderer {
         this.fmCloth = new FullModel();
         this.fmEyes = new FullModel();
         this.fmSmoke = new FullModel();
+        this.fmVignette = new FullModel();
         this.Z_NEAR = 1.0;
         this.Z_FAR = 110.0;
         this.timerDustRotation = 0;
@@ -3606,6 +3681,7 @@ class Renderer extends BaseRenderer {
         this.shaderSoftDiffuseColoredAlpha = new SoftDiffuseColoredAlphaShader(this.gl);
         this.shaderSky = new SkyShader(this.gl);
         this.shaderDepthAnimated = new DepthAnimatedTextureChunkedShader(this.gl);
+        this.shaderVignette = new VertexVignetteShader(this.gl);
     }
     async loadFloatingPointTexture(url, gl, width, height, minFilter = gl.LINEAR, magFilter = gl.LINEAR, clamp = false, type = "fp16") {
         const texture = gl.createTexture();
@@ -3648,7 +3724,8 @@ class Renderer extends BaseRenderer {
             this.fmScythe.load("data/models/scythe", this.gl),
             this.fmCloth.load("data/models/cloth", this.gl),
             this.fmEyes.load("data/models/eyes", this.gl),
-            this.fmSmoke.load("data/models/smoke100", this.gl)
+            this.fmSmoke.load("data/models/smoke100", this.gl),
+            this.fmVignette.load("data/models/vignette-round-vntao", this.gl)
         ]);
         const promiseTextures = Promise.all([
             UncompressedTextureLoader.load("data/textures/sky.webp", this.gl, undefined, undefined, false),
@@ -3880,6 +3957,15 @@ class Renderer extends BaseRenderer {
         this.setTexture2D(0, this.textureVignette, this.shaderDiffuseOneChannel.sTexture);
         this.drawVignette(this.shaderDiffuseOneChannel);
     }
+    drawVignetteObject() {
+        if (this.shaderVignette === undefined) {
+            return;
+        }
+        this.shaderVignette.use();
+        this.gl.uniform4f(this.shaderVignette.color0, 0.0, 0.0, 0.0, 1);
+        this.gl.uniform4f(this.shaderVignette.color1, 1.0, 1.0, 1.0, 1);
+        this.shaderVignette.drawVignette(this, this.fmVignette);
+    }
     drawVignette(shader) {
         this.unbindBuffers();
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.mTriangleVerticesVignette);
@@ -3931,38 +4017,55 @@ class Renderer extends BaseRenderer {
         this.gl.cullFace(this.gl.BACK);
         this.gl.disable(this.gl.BLEND);
         const light = this.getLightningIntensity();
-        this.gl.disable(this.gl.CULL_FACE);
-        this.shaderAtAnimatedTextureChunked.use();
-        this.setTexture2D(1, this.textureCloth, this.shaderAtAnimatedTextureChunked.sTexture);
-        this.drawAnimated(this.shaderAtAnimatedTextureChunked, this.timerCharacterAnimation, this.animationsCloth[this.currentAnimation], this.fmCloth, this.textureClothAnim, 664, "animateStartToEnd");
-        this.gl.enable(this.gl.CULL_FACE);
-        this.shaderLitAnimatedTextureChunked.use();
-        if (light > 0) {
-            this.gl.uniform4f(this.shaderLitAnimatedTextureChunked.uLightDir, this.lightningDirection[0], this.lightningDirection[1], this.lightningDirection[2], 0.0);
-            this.gl.uniform4f(this.shaderLitAnimatedTextureChunked.uLightColor, 1.0, 1.0, 1.0, 0.0);
-            this.gl.uniform1f(this.shaderLitAnimatedTextureChunked.uLightIntensity, light);
-        }
-        else {
-            this.gl.uniform4f(this.shaderLitAnimatedTextureChunked.uLightDir, 0, 0, -1, 0);
-            this.gl.uniform4f(this.shaderLitAnimatedTextureChunked.uLightColor, -1.0, -1.0, -1.0, 0.0);
-            this.gl.uniform1f(this.shaderLitAnimatedTextureChunked.uLightIntensity, 0.7);
-        }
-        this.setTexture2D(1, this.textureBody, this.shaderLitAnimatedTextureChunked.sTexture);
-        this.setTexture2D(2, this.textureBodyNormalsAnim, this.shaderLitAnimatedTextureChunked.sNormals);
-        this.drawAnimated(this.shaderLitAnimatedTextureChunked, this.timerCharacterAnimation, this.animationsBody[this.currentAnimation], this.fmBody, this.textureBodyAnim, this.REAPER_ANIMATION_TEXTURE_WIDTH, "animateStartToEnd");
-        this.setTexture2D(2, this.textureScytheNormalsAnim, this.shaderLitAnimatedTextureChunked.sNormals);
-        this.drawAnimated(this.shaderLitAnimatedTextureChunked, this.timerCharacterAnimation, this.animationsScythe[this.currentAnimation], this.fmScythe, this.textureScytheAnim, 608, "animateStartToEnd");
-        this.gl.depthMask(false);
-        this.shaderDiffuseAnimatedTextureChunkedColored.use();
-        const eyesOpacity = this.getEyesOpacity();
-        this.gl.uniform4f(this.shaderDiffuseAnimatedTextureChunkedColored.uColor, this.PRESET.colorEyes.r * eyesOpacity, this.PRESET.colorEyes.g * eyesOpacity, this.PRESET.colorEyes.b * eyesOpacity, this.PRESET.colorEyes.a * eyesOpacity);
-        this.gl.disable(this.gl.CULL_FACE);
-        this.gl.enable(this.gl.BLEND);
-        this.gl.blendFunc(this.gl.ONE, this.gl.ONE);
-        this.setTexture2D(1, this.textureEyes, this.shaderDiffuseAnimatedTextureChunkedColored.sTexture);
-        this.drawAnimated(this.shaderDiffuseAnimatedTextureChunkedColored, this.timerCharacterAnimation, this.animationsEyes[this.currentAnimation], this.fmEyes, this.textureEyesAnim, 36, "animateStartToEnd");
-        this.gl.disable(this.gl.BLEND);
-        this.gl.depthMask(true);
+        /*
+                this.gl.disable(this.gl.CULL_FACE);
+                this.shaderAtAnimatedTextureChunked.use();
+                this.setTexture2D(1, this.textureCloth!, this.shaderAtAnimatedTextureChunked.sTexture!);
+                this.drawAnimated(this.shaderAtAnimatedTextureChunked, this.timerCharacterAnimation, this.animationsCloth[this.currentAnimation], this.fmCloth, this.textureClothAnim!, 664, "animateStartToEnd");
+                this.gl.enable(this.gl.CULL_FACE);
+        
+                this.shaderLitAnimatedTextureChunked.use();
+                if (light > 0) {
+                    this.gl.uniform4f(
+                        this.shaderLitAnimatedTextureChunked.uLightDir!,
+                        this.lightningDirection[0],
+                        this.lightningDirection[1],
+                        this.lightningDirection[2],
+                        0.0
+                    );
+                    this.gl.uniform4f(this.shaderLitAnimatedTextureChunked.uLightColor!, 1.0, 1.0, 1.0, 0.0);
+                    this.gl.uniform1f(this.shaderLitAnimatedTextureChunked.uLightIntensity!, light);
+                } else {
+                    this.gl.uniform4f(this.shaderLitAnimatedTextureChunked.uLightDir!, 0, 0, -1, 0);
+                    this.gl.uniform4f(this.shaderLitAnimatedTextureChunked.uLightColor!, -1.0, -1.0, -1.0, 0.0);
+                    this.gl.uniform1f(this.shaderLitAnimatedTextureChunked.uLightIntensity!, 0.7);
+                }
+        
+                this.setTexture2D(1, this.textureBody!, this.shaderLitAnimatedTextureChunked.sTexture!);
+                this.setTexture2D(2, this.textureBodyNormalsAnim!, this.shaderLitAnimatedTextureChunked.sNormals!);
+                this.drawAnimated(this.shaderLitAnimatedTextureChunked, this.timerCharacterAnimation, this.animationsBody[this.currentAnimation], this.fmBody, this.textureBodyAnim!, this.REAPER_ANIMATION_TEXTURE_WIDTH, "animateStartToEnd");
+        
+                this.setTexture2D(2, this.textureScytheNormalsAnim!, this.shaderLitAnimatedTextureChunked.sNormals!);
+                this.drawAnimated(this.shaderLitAnimatedTextureChunked, this.timerCharacterAnimation, this.animationsScythe[this.currentAnimation], this.fmScythe, this.textureScytheAnim!, 608, "animateStartToEnd");
+        
+                this.gl.depthMask(false);
+                this.shaderDiffuseAnimatedTextureChunkedColored.use();
+                const eyesOpacity = this.getEyesOpacity();
+                this.gl.uniform4f(
+                    this.shaderDiffuseAnimatedTextureChunkedColored.uColor!,
+                    this.PRESET.colorEyes.r * eyesOpacity,
+                    this.PRESET.colorEyes.g * eyesOpacity,
+                    this.PRESET.colorEyes.b * eyesOpacity,
+                    this.PRESET.colorEyes.a * eyesOpacity,
+                );
+                this.gl.disable(this.gl.CULL_FACE);
+                this.gl.enable(this.gl.BLEND);
+                this.gl.blendFunc(this.gl.ONE, this.gl.ONE);
+                this.setTexture2D(1, this.textureEyes!, this.shaderDiffuseAnimatedTextureChunkedColored.sTexture!);
+                this.drawAnimated(this.shaderDiffuseAnimatedTextureChunkedColored, this.timerCharacterAnimation, this.animationsEyes[this.currentAnimation], this.fmEyes, this.textureEyesAnim!, 36, "animateStartToEnd");
+                this.gl.disable(this.gl.BLEND);
+                this.gl.depthMask(true);
+        */
         this.gl.enable(this.gl.CULL_FACE);
         // Sky is a distant object drawn one of the last, it doesn't add useful depth information.
         // Reduce memory bandwidth by disabling writing to z-buffer.
@@ -3970,25 +4073,21 @@ class Renderer extends BaseRenderer {
         this.shaderSky.use();
         this.setTexture2D(0, this.textureSky, this.shaderSky.sTexture);
         this.setTexture2D(1, this.textureDisplacement, this.shaderSky.sDisplacement);
-        this.shaderSky.setColor(1, 1, 1, 1);
-        this.shaderSky.setColor(0.7, 0.6, 0.4, 1); // sepia
-        this.shaderSky.setColor(0.51, 0.72, 0.9, 1); // blue
-        this.shaderSky.setColor(0.65, 0.35, 0.32, 1); // red
-        this.shaderSky.setColor(0.38, 0.60, 0.4, 1); // green
-        this.shaderSky.setColor(0.72, 0.7, 0.43, 1); // yellow
         this.shaderSky.setColor(this.PRESET.colorSky.r, this.PRESET.colorSky.g, this.PRESET.colorSky.b, this.PRESET.colorSky.a);
+        this.shaderSky.setColor(133, 133, 133, 1); // FIXME
         this.gl.uniform1f(this.shaderSky.uTime, this.timerSkyAnimation);
         this.gl.uniform1f(this.shaderSky.uLightning, light * 5);
         this.gl.uniform4f(this.shaderSky.uLightningExponent, 3.3, 3.3, 3.3, 3.3);
         this.shaderSky.drawModel(this, this.fmSky, this.cameraPosition[0], this.cameraPosition[1], this.cameraPosition[2], 0, 0, this.timerSkyRotation * Math.PI * 2, 1, 1, 1);
         this.gl.enable(this.gl.BLEND);
         this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
-        this.drawParticles();
-        this.drawGhosts();
+        // this.drawParticles();
+        // this.drawGhosts();
         this.gl.blendFunc(this.gl.ONE, this.gl.ONE);
-        this.drawDust(light);
+        // this.drawDust(light);
         this.gl.blendFunc(this.gl.DST_COLOR, this.gl.SRC_COLOR);
-        this.drawSceneVignette();
+        this.gl.blendFunc(this.gl.ZERO, this.gl.SRC_COLOR);
+        this.drawVignetteObject();
         this.gl.disable(this.gl.BLEND);
         this.gl.depthMask(true);
     }
@@ -4281,6 +4380,7 @@ class FpsCamera {
         }
     }
 }
+//# sourceMappingURL=FpsCamera.js.map
 
 var MovementMode;
 (function (MovementMode) {
@@ -4332,6 +4432,7 @@ class FreeMovement {
     }
     ;
 }
+//# sourceMappingURL=FreeMovement.js.map
 
 function ready(fn) {
     if (document.readyState !== "loading") {
@@ -4373,4 +4474,5 @@ ready(() => {
     });
     canvas.addEventListener("click", () => renderer.changeScene());
 });
+//# sourceMappingURL=index.js.map
 //# sourceMappingURL=index.js.map
