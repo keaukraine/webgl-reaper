@@ -17,25 +17,19 @@ export class VertexVignetteShader extends BaseShader {
             uniform mediump vec4 color1;
             varying mediump vec4 vAO;
 
-            const float GAMMA = 1.0 / 2.2;
-
             void main() {
               gl_Position = view_proj_matrix * rm_Vertex;
-            //   float ao = pow(smoothstep(0., 1., aAO), GAMMA);
-            //   float ao = pow(aAO, GAMMA);
-              float ao = aAO;
-              vAO = mix(color0, color1, ao);
+              vAO = mix(color0, color1, aAO);
             }`;
 
         this.fragmentShaderCode = `precision mediump float;
             varying vec4 vAO;
 
-            const float GAMMA = 1.0 / 2.2;
-            // const float GAMMA = 1.0;
-            const vec4 GAMMA_VEC = vec4(GAMMA, GAMMA, GAMMA, 1.0);
+            const float MIN = 0.0;
+            const float MAX = 1.0;
 
             void main() {
-              gl_FragColor = pow(smoothstep(0., 1., vAO), GAMMA_VEC);
+              gl_FragColor = smoothstep(MIN, MAX, vAO);
             }`;
     }
 

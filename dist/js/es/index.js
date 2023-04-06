@@ -3230,24 +3230,18 @@ class VertexVignetteShader extends BaseShader {
             uniform mediump vec4 color1;
             varying mediump vec4 vAO;
 
-            const float GAMMA = 1.0 / 2.2;
-
             void main() {
               gl_Position = view_proj_matrix * rm_Vertex;
-            //   float ao = pow(smoothstep(0., 1., aAO), GAMMA);
-            //   float ao = pow(aAO, GAMMA);
-              float ao = aAO;
-              vAO = mix(color0, color1, ao);
+              vAO = mix(color0, color1, aAO);
             }`;
         this.fragmentShaderCode = `precision mediump float;
             varying vec4 vAO;
 
-            const float GAMMA = 1.0 / 2.2;
-            // const float GAMMA = 1.0;
-            const vec4 GAMMA_VEC = vec4(GAMMA, GAMMA, GAMMA, 1.0);
+            const float MIN = 0.0;
+            const float MAX = 1.0;
 
             void main() {
-              gl_FragColor = pow(smoothstep(0., 1., vAO), GAMMA_VEC);
+              gl_FragColor = smoothstep(MIN, MAX, vAO);
             }`;
     }
     fillUniformsAttributes() {
@@ -3962,7 +3956,7 @@ class Renderer extends BaseRenderer {
             return;
         }
         this.shaderVignette.use();
-        this.gl.uniform4f(this.shaderVignette.color0, 0.0, 0.0, 0.0, 1);
+        this.gl.uniform4f(this.shaderVignette.color0, 0.33, 0.33, 0.33, 1);
         this.gl.uniform4f(this.shaderVignette.color1, 1.0, 1.0, 1.0, 1);
         this.shaderVignette.drawVignette(this, this.fmVignette);
     }
@@ -4017,55 +4011,38 @@ class Renderer extends BaseRenderer {
         this.gl.cullFace(this.gl.BACK);
         this.gl.disable(this.gl.BLEND);
         const light = this.getLightningIntensity();
-        /*
-                this.gl.disable(this.gl.CULL_FACE);
-                this.shaderAtAnimatedTextureChunked.use();
-                this.setTexture2D(1, this.textureCloth!, this.shaderAtAnimatedTextureChunked.sTexture!);
-                this.drawAnimated(this.shaderAtAnimatedTextureChunked, this.timerCharacterAnimation, this.animationsCloth[this.currentAnimation], this.fmCloth, this.textureClothAnim!, 664, "animateStartToEnd");
-                this.gl.enable(this.gl.CULL_FACE);
-        
-                this.shaderLitAnimatedTextureChunked.use();
-                if (light > 0) {
-                    this.gl.uniform4f(
-                        this.shaderLitAnimatedTextureChunked.uLightDir!,
-                        this.lightningDirection[0],
-                        this.lightningDirection[1],
-                        this.lightningDirection[2],
-                        0.0
-                    );
-                    this.gl.uniform4f(this.shaderLitAnimatedTextureChunked.uLightColor!, 1.0, 1.0, 1.0, 0.0);
-                    this.gl.uniform1f(this.shaderLitAnimatedTextureChunked.uLightIntensity!, light);
-                } else {
-                    this.gl.uniform4f(this.shaderLitAnimatedTextureChunked.uLightDir!, 0, 0, -1, 0);
-                    this.gl.uniform4f(this.shaderLitAnimatedTextureChunked.uLightColor!, -1.0, -1.0, -1.0, 0.0);
-                    this.gl.uniform1f(this.shaderLitAnimatedTextureChunked.uLightIntensity!, 0.7);
-                }
-        
-                this.setTexture2D(1, this.textureBody!, this.shaderLitAnimatedTextureChunked.sTexture!);
-                this.setTexture2D(2, this.textureBodyNormalsAnim!, this.shaderLitAnimatedTextureChunked.sNormals!);
-                this.drawAnimated(this.shaderLitAnimatedTextureChunked, this.timerCharacterAnimation, this.animationsBody[this.currentAnimation], this.fmBody, this.textureBodyAnim!, this.REAPER_ANIMATION_TEXTURE_WIDTH, "animateStartToEnd");
-        
-                this.setTexture2D(2, this.textureScytheNormalsAnim!, this.shaderLitAnimatedTextureChunked.sNormals!);
-                this.drawAnimated(this.shaderLitAnimatedTextureChunked, this.timerCharacterAnimation, this.animationsScythe[this.currentAnimation], this.fmScythe, this.textureScytheAnim!, 608, "animateStartToEnd");
-        
-                this.gl.depthMask(false);
-                this.shaderDiffuseAnimatedTextureChunkedColored.use();
-                const eyesOpacity = this.getEyesOpacity();
-                this.gl.uniform4f(
-                    this.shaderDiffuseAnimatedTextureChunkedColored.uColor!,
-                    this.PRESET.colorEyes.r * eyesOpacity,
-                    this.PRESET.colorEyes.g * eyesOpacity,
-                    this.PRESET.colorEyes.b * eyesOpacity,
-                    this.PRESET.colorEyes.a * eyesOpacity,
-                );
-                this.gl.disable(this.gl.CULL_FACE);
-                this.gl.enable(this.gl.BLEND);
-                this.gl.blendFunc(this.gl.ONE, this.gl.ONE);
-                this.setTexture2D(1, this.textureEyes!, this.shaderDiffuseAnimatedTextureChunkedColored.sTexture!);
-                this.drawAnimated(this.shaderDiffuseAnimatedTextureChunkedColored, this.timerCharacterAnimation, this.animationsEyes[this.currentAnimation], this.fmEyes, this.textureEyesAnim!, 36, "animateStartToEnd");
-                this.gl.disable(this.gl.BLEND);
-                this.gl.depthMask(true);
-        */
+        this.gl.disable(this.gl.CULL_FACE);
+        this.shaderAtAnimatedTextureChunked.use();
+        this.setTexture2D(1, this.textureCloth, this.shaderAtAnimatedTextureChunked.sTexture);
+        this.drawAnimated(this.shaderAtAnimatedTextureChunked, this.timerCharacterAnimation, this.animationsCloth[this.currentAnimation], this.fmCloth, this.textureClothAnim, 664, "animateStartToEnd");
+        this.gl.enable(this.gl.CULL_FACE);
+        this.shaderLitAnimatedTextureChunked.use();
+        if (light > 0) {
+            this.gl.uniform4f(this.shaderLitAnimatedTextureChunked.uLightDir, this.lightningDirection[0], this.lightningDirection[1], this.lightningDirection[2], 0.0);
+            this.gl.uniform4f(this.shaderLitAnimatedTextureChunked.uLightColor, 1.0, 1.0, 1.0, 0.0);
+            this.gl.uniform1f(this.shaderLitAnimatedTextureChunked.uLightIntensity, light);
+        }
+        else {
+            this.gl.uniform4f(this.shaderLitAnimatedTextureChunked.uLightDir, 0, 0, -1, 0);
+            this.gl.uniform4f(this.shaderLitAnimatedTextureChunked.uLightColor, -1.0, -1.0, -1.0, 0.0);
+            this.gl.uniform1f(this.shaderLitAnimatedTextureChunked.uLightIntensity, 0.7);
+        }
+        this.setTexture2D(1, this.textureBody, this.shaderLitAnimatedTextureChunked.sTexture);
+        this.setTexture2D(2, this.textureBodyNormalsAnim, this.shaderLitAnimatedTextureChunked.sNormals);
+        this.drawAnimated(this.shaderLitAnimatedTextureChunked, this.timerCharacterAnimation, this.animationsBody[this.currentAnimation], this.fmBody, this.textureBodyAnim, this.REAPER_ANIMATION_TEXTURE_WIDTH, "animateStartToEnd");
+        this.setTexture2D(2, this.textureScytheNormalsAnim, this.shaderLitAnimatedTextureChunked.sNormals);
+        this.drawAnimated(this.shaderLitAnimatedTextureChunked, this.timerCharacterAnimation, this.animationsScythe[this.currentAnimation], this.fmScythe, this.textureScytheAnim, 608, "animateStartToEnd");
+        this.gl.depthMask(false);
+        this.shaderDiffuseAnimatedTextureChunkedColored.use();
+        const eyesOpacity = this.getEyesOpacity();
+        this.gl.uniform4f(this.shaderDiffuseAnimatedTextureChunkedColored.uColor, this.PRESET.colorEyes.r * eyesOpacity, this.PRESET.colorEyes.g * eyesOpacity, this.PRESET.colorEyes.b * eyesOpacity, this.PRESET.colorEyes.a * eyesOpacity);
+        this.gl.disable(this.gl.CULL_FACE);
+        this.gl.enable(this.gl.BLEND);
+        this.gl.blendFunc(this.gl.ONE, this.gl.ONE);
+        this.setTexture2D(1, this.textureEyes, this.shaderDiffuseAnimatedTextureChunkedColored.sTexture);
+        this.drawAnimated(this.shaderDiffuseAnimatedTextureChunkedColored, this.timerCharacterAnimation, this.animationsEyes[this.currentAnimation], this.fmEyes, this.textureEyesAnim, 36, "animateStartToEnd");
+        this.gl.disable(this.gl.BLEND);
+        this.gl.depthMask(true);
         this.gl.enable(this.gl.CULL_FACE);
         // Sky is a distant object drawn one of the last, it doesn't add useful depth information.
         // Reduce memory bandwidth by disabling writing to z-buffer.
@@ -4074,17 +4051,16 @@ class Renderer extends BaseRenderer {
         this.setTexture2D(0, this.textureSky, this.shaderSky.sTexture);
         this.setTexture2D(1, this.textureDisplacement, this.shaderSky.sDisplacement);
         this.shaderSky.setColor(this.PRESET.colorSky.r, this.PRESET.colorSky.g, this.PRESET.colorSky.b, this.PRESET.colorSky.a);
-        this.shaderSky.setColor(133, 133, 133, 1); // FIXME
         this.gl.uniform1f(this.shaderSky.uTime, this.timerSkyAnimation);
         this.gl.uniform1f(this.shaderSky.uLightning, light * 5);
         this.gl.uniform4f(this.shaderSky.uLightningExponent, 3.3, 3.3, 3.3, 3.3);
         this.shaderSky.drawModel(this, this.fmSky, this.cameraPosition[0], this.cameraPosition[1], this.cameraPosition[2], 0, 0, this.timerSkyRotation * Math.PI * 2, 1, 1, 1);
         this.gl.enable(this.gl.BLEND);
         this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
-        // this.drawParticles();
-        // this.drawGhosts();
+        this.drawParticles();
+        this.drawGhosts();
         this.gl.blendFunc(this.gl.ONE, this.gl.ONE);
-        // this.drawDust(light);
+        this.drawDust(light);
         this.gl.blendFunc(this.gl.DST_COLOR, this.gl.SRC_COLOR);
         this.gl.blendFunc(this.gl.ZERO, this.gl.SRC_COLOR);
         this.drawVignetteObject();
@@ -4432,7 +4408,6 @@ class FreeMovement {
     }
     ;
 }
-//# sourceMappingURL=FreeMovement.js.map
 
 function ready(fn) {
     if (document.readyState !== "loading") {
@@ -4474,5 +4449,4 @@ ready(() => {
     });
     canvas.addEventListener("click", () => renderer.changeScene());
 });
-//# sourceMappingURL=index.js.map
 //# sourceMappingURL=index.js.map

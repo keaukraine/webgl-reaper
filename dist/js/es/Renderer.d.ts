@@ -114,7 +114,7 @@ export declare class Renderer extends BaseRenderer {
     onAfterInit(): void;
     onInitError(): void;
     initShaders(): void;
-    loadFloatingPointTexture(url: string, gl: WebGL2RenderingContext, width: number, height: number, minFilter?: number, magFilter?: number, clamp?: boolean, type?: "fp16" | "snorm8"): Promise<WebGLTexture>;
+    loadFloatingPointTexture(url: string, gl: WebGL2RenderingContext, width: number, height: number, minFilter?: number | undefined, magFilter?: number | undefined, clamp?: boolean, type?: "fp16" | "snorm8"): Promise<WebGLTexture>;
     loadData(): Promise<void>;
     protected initOffscreen(): void;
     checkGlError(operation: string): void;

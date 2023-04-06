@@ -515,8 +515,8 @@ export class Renderer extends BaseRenderer {
         gl: WebGL2RenderingContext,
         width: number,
         height: number,
-        minFilter = gl.LINEAR,
-        magFilter = gl.LINEAR,
+        minFilter: number | undefined = gl.LINEAR,
+        magFilter: number | undefined = gl.LINEAR,
         clamp = false,
         type: "fp16" | "snorm8" = "fp16"
     ): Promise<WebGLTexture> {
@@ -931,7 +931,7 @@ export class Renderer extends BaseRenderer {
         }
 
         this.shaderVignette.use();
-        this.gl.uniform4f(this.shaderVignette.color0!, 0.0, 0.0, 0.0, 1);
+        this.gl.uniform4f(this.shaderVignette.color0!, 0.33, 0.33, 0.33, 1);
         this.gl.uniform4f(this.shaderVignette.color1!, 1.0, 1.0, 1.0, 1);
 
         this.shaderVignette.drawVignette(this, this.fmVignette);
@@ -999,7 +999,7 @@ export class Renderer extends BaseRenderer {
         this.gl.disable(this.gl.BLEND);
 
         const light = this.getLightningIntensity();
-/*
+
         this.gl.disable(this.gl.CULL_FACE);
         this.shaderAtAnimatedTextureChunked.use();
         this.setTexture2D(1, this.textureCloth!, this.shaderAtAnimatedTextureChunked.sTexture!);
@@ -1047,7 +1047,6 @@ export class Renderer extends BaseRenderer {
         this.drawAnimated(this.shaderDiffuseAnimatedTextureChunkedColored, this.timerCharacterAnimation, this.animationsEyes[this.currentAnimation], this.fmEyes, this.textureEyesAnim!, 36, "animateStartToEnd");
         this.gl.disable(this.gl.BLEND);
         this.gl.depthMask(true);
-*/
 
         this.gl.enable(this.gl.CULL_FACE);
 
@@ -1059,7 +1058,6 @@ export class Renderer extends BaseRenderer {
         this.setTexture2D(0, this.textureSky!, this.shaderSky.sTexture!);
         this.setTexture2D(1, this.textureDisplacement!, this.shaderSky.sDisplacement!);
         this.shaderSky.setColor(this.PRESET.colorSky.r, this.PRESET.colorSky.g, this.PRESET.colorSky.b, this.PRESET.colorSky.a);
-        this.shaderSky.setColor(133, 133, 133, 1); // FIXME
         this.gl.uniform1f(this.shaderSky.uTime!, this.timerSkyAnimation);
         this.gl.uniform1f(this.shaderSky.uLightning!, light * 5);
         this.gl.uniform4f(this.shaderSky.uLightningExponent!, 3.3, 3.3, 3.3, 3.3);
@@ -1072,11 +1070,11 @@ export class Renderer extends BaseRenderer {
 
         this.gl.enable(this.gl.BLEND);
         this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
-        // this.drawParticles();
-        // this.drawGhosts();
+        this.drawParticles();
+        this.drawGhosts();
 
         this.gl.blendFunc(this.gl.ONE, this.gl.ONE);
-        // this.drawDust(light);
+        this.drawDust(light);
 
         this.gl.blendFunc(this.gl.DST_COLOR, this.gl.SRC_COLOR);
 
