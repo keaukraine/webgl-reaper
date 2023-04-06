@@ -18,6 +18,7 @@ import { SkyShader } from "./shaders/SkyShader";
 import { DiffuseOneChannelShader } from "./shaders/DiffuseOneChannelShader";
 import { IAnimatedTextureChunkedShader } from "./shaders/IAnimatedTextureChunkedShader";
 import { DepthAnimatedTextureChunkedShader } from "./shaders/DepthAnimatedTextureChunkedShader";
+import { VertexVignetteShader } from "./shaders/VertexVignetteShader";
 
 const FOV_LANDSCAPE = 60.0; // FOV for landscape
 const FOV_PORTRAIT = 80.0; // FOV for portrait
@@ -58,6 +59,7 @@ export class Renderer extends BaseRenderer {
     private fmCloth = new FullModel();
     private fmEyes = new FullModel();
     private fmSmoke = new FullModel();
+    private fmVignette = new FullModel();
 
     private textureSky: WebGLTexture | undefined;
     private textureParticle: WebGLTexture | undefined;
@@ -91,6 +93,7 @@ export class Renderer extends BaseRenderer {
     private shaderSoftDiffuseColoredAlpha: SoftDiffuseColoredAlphaShader | undefined;
     private shaderSky: SkyShader | undefined;
     private shaderDepthAnimated: DepthAnimatedTextureChunkedShader | undefined;
+    private shaderVignette: VertexVignetteShader | undefined;
 
     private textureOffscreenColor: WebGLTexture | undefined
     private textureOffscreenDepth: WebGLTexture | undefined;
@@ -504,6 +507,7 @@ export class Renderer extends BaseRenderer {
         this.shaderSoftDiffuseColoredAlpha = new SoftDiffuseColoredAlphaShader(this.gl);
         this.shaderSky = new SkyShader(this.gl);
         this.shaderDepthAnimated = new DepthAnimatedTextureChunkedShader(this.gl);
+        this.shaderVignette = new VertexVignetteShader(this.gl);
     }
 
     async loadFloatingPointTexture(
@@ -570,7 +574,8 @@ export class Renderer extends BaseRenderer {
             this.fmScythe.load("data/models/scythe", this.gl),
             this.fmCloth.load("data/models/cloth", this.gl),
             this.fmEyes.load("data/models/eyes", this.gl),
-            this.fmSmoke.load("data/models/smoke100", this.gl)
+            this.fmSmoke.load("data/models/smoke100", this.gl),
+            this.fmVignette.load("data/models/vignette-round-vntao", this.gl)
         ]);
 
         const promiseTextures = Promise.all([
@@ -647,7 +652,7 @@ export class Renderer extends BaseRenderer {
             this.textureEyes,
             this.textureSmoke,
             this.textureVignette
-        ] = textures;        
+        ] = textures;
 
         this.gl.bindTexture(this.gl.TEXTURE_2D, this.textureBody);
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
@@ -687,7 +692,7 @@ export class Renderer extends BaseRenderer {
 
         console.log("Initialized offscreen FBO.");
     }
-    
+
     checkGlError(operation: string): void {
         // In production code, override this to do nothing for better performance
     }
@@ -920,6 +925,18 @@ export class Renderer extends BaseRenderer {
         this.drawVignette(this.shaderDiffuseOneChannel!);
     }
 
+    drawVignetteObject() {
+        if (this.shaderVignette === undefined) {
+            return;
+        }
+
+        this.shaderVignette.use();
+        this.gl.uniform4f(this.shaderVignette.color0!, 0.0, 0.0, 0.0, 1);
+        this.gl.uniform4f(this.shaderVignette.color1!, 1.0, 1.0, 1.0, 1);
+
+        this.shaderVignette.drawVignette(this, this.fmVignette);
+    }
+
     drawVignette(shader: DiffuseShader) {
         this.unbindBuffers();
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.mTriangleVerticesVignette!);
@@ -982,7 +999,7 @@ export class Renderer extends BaseRenderer {
         this.gl.disable(this.gl.BLEND);
 
         const light = this.getLightningIntensity();
-
+/*
         this.gl.disable(this.gl.CULL_FACE);
         this.shaderAtAnimatedTextureChunked.use();
         this.setTexture2D(1, this.textureCloth!, this.shaderAtAnimatedTextureChunked.sTexture!);
@@ -1030,6 +1047,7 @@ export class Renderer extends BaseRenderer {
         this.drawAnimated(this.shaderDiffuseAnimatedTextureChunkedColored, this.timerCharacterAnimation, this.animationsEyes[this.currentAnimation], this.fmEyes, this.textureEyesAnim!, 36, "animateStartToEnd");
         this.gl.disable(this.gl.BLEND);
         this.gl.depthMask(true);
+*/
 
         this.gl.enable(this.gl.CULL_FACE);
 
@@ -1040,13 +1058,8 @@ export class Renderer extends BaseRenderer {
         this.shaderSky.use();
         this.setTexture2D(0, this.textureSky!, this.shaderSky.sTexture!);
         this.setTexture2D(1, this.textureDisplacement!, this.shaderSky.sDisplacement!);
-        this.shaderSky.setColor(1, 1, 1, 1);
-        this.shaderSky.setColor(0.7, 0.6, 0.4, 1); // sepia
-        this.shaderSky.setColor(0.51, 0.72, 0.9, 1); // blue
-        this.shaderSky.setColor(0.65, 0.35, 0.32, 1); // red
-        this.shaderSky.setColor(0.38, 0.60, 0.4, 1); // green
-        this.shaderSky.setColor(0.72, 0.7, 0.43, 1); // yellow
         this.shaderSky.setColor(this.PRESET.colorSky.r, this.PRESET.colorSky.g, this.PRESET.colorSky.b, this.PRESET.colorSky.a);
+        this.shaderSky.setColor(133, 133, 133, 1); // FIXME
         this.gl.uniform1f(this.shaderSky.uTime!, this.timerSkyAnimation);
         this.gl.uniform1f(this.shaderSky.uLightning!, light * 5);
         this.gl.uniform4f(this.shaderSky.uLightningExponent!, 3.3, 3.3, 3.3, 3.3);
@@ -1059,14 +1072,16 @@ export class Renderer extends BaseRenderer {
 
         this.gl.enable(this.gl.BLEND);
         this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
-        this.drawParticles();
-        this.drawGhosts();
+        // this.drawParticles();
+        // this.drawGhosts();
 
         this.gl.blendFunc(this.gl.ONE, this.gl.ONE);
-        this.drawDust(light);
+        // this.drawDust(light);
 
         this.gl.blendFunc(this.gl.DST_COLOR, this.gl.SRC_COLOR);
-        this.drawSceneVignette();
+
+        this.gl.blendFunc(this.gl.ZERO, this.gl.SRC_COLOR);
+        this.drawVignetteObject();
 
         this.gl.disable(this.gl.BLEND);
         this.gl.depthMask(true);

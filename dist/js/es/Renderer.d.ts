@@ -13,6 +13,7 @@ export declare class Renderer extends BaseRenderer {
     private fmCloth;
     private fmEyes;
     private fmSmoke;
+    private fmVignette;
     private textureSky;
     private textureParticle;
     private textureDisplacement;
@@ -43,6 +44,7 @@ export declare class Renderer extends BaseRenderer {
     private shaderSoftDiffuseColoredAlpha;
     private shaderSky;
     private shaderDepthAnimated;
+    private shaderVignette;
     private textureOffscreenColor;
     private textureOffscreenDepth;
     private fboOffscreen;
@@ -131,6 +133,7 @@ export declare class Renderer extends BaseRenderer {
     drawScene(): void;
     drawTestDepth(): void;
     drawSceneVignette(): void;
+    drawVignetteObject(): void;
     drawVignette(shader: DiffuseShader): void;
     private drawDepthObjects;
     private drawSceneObjects;
