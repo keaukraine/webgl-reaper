@@ -19,6 +19,7 @@ import { DiffuseOneChannelShader } from "./shaders/DiffuseOneChannelShader";
 import { IAnimatedTextureChunkedShader } from "./shaders/IAnimatedTextureChunkedShader";
 import { DepthAnimatedTextureChunkedShader } from "./shaders/DepthAnimatedTextureChunkedShader";
 import { VertexVignetteShader } from "./shaders/VertexVignetteShader";
+import { PointSpriteGlowShader } from "./shaders/PointSpriteGlowShader";
 
 const FOV_LANDSCAPE = 60.0; // FOV for landscape
 const FOV_PORTRAIT = 80.0; // FOV for portrait
@@ -66,6 +67,7 @@ export class Renderer extends BaseRenderer {
     private textureDisplacement: WebGLTexture | undefined;
     private textureDust: WebGLTexture | undefined;
     private textureSmoke: WebGLTexture | undefined;
+    private textureParticleGlow: WebGLTexture | undefined;
 
     private textureBody: WebGLTexture | undefined;
     private textureCloth: WebGLTexture | undefined;
@@ -93,6 +95,8 @@ export class Renderer extends BaseRenderer {
     private shaderSky: SkyShader | undefined;
     private shaderDepthAnimated: DepthAnimatedTextureChunkedShader | undefined;
     private shaderVignette: VertexVignetteShader | undefined;
+
+    private shaderPointSpriteGlow: PointSpriteGlowShader | undefined;
 
     private textureOffscreenColor: WebGLTexture | undefined
     private textureOffscreenDepth: WebGLTexture | undefined;
@@ -507,6 +511,8 @@ export class Renderer extends BaseRenderer {
         this.shaderSky = new SkyShader(this.gl);
         this.shaderDepthAnimated = new DepthAnimatedTextureChunkedShader(this.gl);
         this.shaderVignette = new VertexVignetteShader(this.gl);
+
+        this.shaderPointSpriteGlow = new PointSpriteGlowShader(this.gl);
     }
 
     async loadFloatingPointTexture(
@@ -630,7 +636,8 @@ export class Renderer extends BaseRenderer {
                 true
             ),
             UncompressedTextureLoader.load("data/textures/eye_alpha.webp", this.gl),
-            UncompressedTextureLoader.load("data/textures/smoke.webp", this.gl)
+            UncompressedTextureLoader.load("data/textures/smoke.webp", this.gl),
+            UncompressedTextureLoader.load("data/textures/particle-glow.png", this.gl)
         ]);
 
         const [models, textures] = await Promise.all([promiseModels, promiseTextures]);
@@ -648,7 +655,8 @@ export class Renderer extends BaseRenderer {
             this.textureClothAnim,
             this.textureEyesAnim,
             this.textureEyes,
-            this.textureSmoke
+            this.textureSmoke,
+            this.textureParticleGlow
         ] = textures;
 
         this.gl.bindTexture(this.gl.TEXTURE_2D, this.textureBody);
@@ -791,7 +799,7 @@ export class Renderer extends BaseRenderer {
 
             const prevLightning = this.timerLightning;
 
-            this.timerCharacterAnimation = (timeNow % this.REAPER_ANIMATION_PERIOD) / this.REAPER_ANIMATION_PERIOD;
+            // this.timerCharacterAnimation = (timeNow % this.REAPER_ANIMATION_PERIOD) / this.REAPER_ANIMATION_PERIOD;
             this.timerSkyAnimation = (timeNow % this.SKY_ANIMATION_PERIOD) / this.SKY_ANIMATION_PERIOD;
             this.timerSmokeMovement = (timeNow % this.SMOKE_MOVEMENT_PERIOD) / this.SMOKE_MOVEMENT_PERIOD;
             this.timerSmokeRotation = (timeNow % this.SMOKE_ROTATION_PERIOD) / this.SMOKE_ROTATION_PERIOD;
@@ -803,7 +811,7 @@ export class Renderer extends BaseRenderer {
                 this.timerLightning = (timeNow % this.LIGHTNING_PERIOD) / this.LIGHTNING_PERIOD;
             }
 
-            this.cameraPositionInterpolator.iterate(timeNow);
+            // this.cameraPositionInterpolator.iterate(timeNow);
             if (this.cameraPositionInterpolator.timer === 1.0) {
                 this.randomizeCamera();
             }
@@ -1067,6 +1075,12 @@ export class Renderer extends BaseRenderer {
         this.gl.blendFunc(this.gl.ONE, this.gl.ONE);
         this.drawDust(light);
 
+
+        this.gl.disable(this.gl.BLEND);
+        this.drawGlow(0.825);
+        this.gl.enable(this.gl.BLEND);
+
+
         this.gl.blendFunc(this.gl.DST_COLOR, this.gl.SRC_COLOR);
 
         this.gl.blendFunc(this.gl.ZERO, this.gl.SRC_COLOR);
@@ -1269,6 +1283,41 @@ export class Renderer extends BaseRenderer {
         );
     }
 
+    private drawGlow(lightIntensity: number): void {
+        if (this.shaderPointSpriteGlow === undefined) {
+            return;
+        }
+
+
+        this.shaderPointSpriteGlow.use();
+        this.setTexture2D(0, this.textureParticleGlow!, this.shaderPointSpriteGlow.sTexture!);
+        // this.gl.uniform1f(this.shaderPointSpriteColored.uThickness!, this.dustSpriteSize);
+
+        this.gl.uniform2f(this.shaderPointSpriteGlow.cameraRange!, this.Z_NEAR, this.Z_FAR); // near and far clipping planes
+        this.gl.uniform2f(this.shaderPointSpriteGlow.invViewportSize!, 1.0 / this.gl.canvas.width, 1.0 / this.gl.canvas.height); // inverted screen size
+        this.setTexture2D(2, this.textureOffscreenDepth!, this.shaderPointSpriteGlow.sDepth!);
+
+
+        const colorR = 0;
+        const colorG = 1 * lightIntensity;
+        const colorB = 0;
+
+        this.gl.uniform4f(
+            this.shaderPointSpriteGlow.color!,
+            colorR,
+            colorG,
+            colorB,
+            1
+        );
+        this.drawGlowSpritesVBOTranslatedRotatedScaled(
+            this.shaderPointSpriteGlow,
+            this.fmDust,
+            3.14, 3.0, 15,
+            0, 0, 0,
+            0, 0, 0
+        );
+    }
+
     private drawAnimated(
         shader: IAnimatedTextureChunkedShader,
         timer: number,
@@ -1302,6 +1351,7 @@ export class Renderer extends BaseRenderer {
 
     private randomizeCamera(): void {
         this.currentRandomCamera = (this.currentRandomCamera + 1 + Math.trunc(Math.random() * (this.CAMERAS.length - 2))) % this.CAMERAS.length;
+        this.currentRandomCamera = 4;//(this.currentRandomCamera + 1 + Math.trunc(Math.random() * (this.CAMERAS.length - 2))) % this.CAMERAS.length;
 
         this.cameraPositionInterpolator.speed = this.CAMERA_SPEED * this.CAMERAS[this.currentRandomCamera].speedMultiplier;
         this.cameraPositionInterpolator.position = this.CAMERAS[this.currentRandomCamera];
@@ -1322,6 +1372,19 @@ export class Renderer extends BaseRenderer {
 
         this.gl.uniformMatrix4fv(shader.uMvp!, false, this.mMVPMatrix);
         this.gl.drawElements(this.gl.POINTS, model.getNumIndices() * 3, this.gl.UNSIGNED_SHORT, 0);
+    }
+
+    private drawGlowSpritesVBOTranslatedRotatedScaled(shader: PointSpriteGlowShader, model: FullModel, tx: number, ty: number, tz: number, rx: number, ry: number, rz: number, sx: number, sy: number, sz: number) {
+        model.bindBuffers(this.gl);
+
+        this.gl.enableVertexAttribArray(shader.rm_Vertex!);
+        this.gl.vertexAttribPointer(shader.rm_Vertex!, 3, this.gl.FLOAT, false, 4 * (3 + 2), 0);
+
+        this.calculateMVPMatrix(tx, ty, tz, rx, ry, rz, sx, sy, sz);
+
+        this.gl.uniformMatrix4fv(shader.view_proj_matrix!, false, this.mMVPMatrix);
+        // this.gl.drawElements(this.gl.POINTS, model.getNumIndices() * 3, this.gl.UNSIGNED_SHORT, 0);
+        this.gl.drawElements(this.gl.POINTS, 1 * 3, this.gl.UNSIGNED_SHORT, 0);
     }
 
     private drawDiffuseVBOFacingCamera(shader: DiffuseShader, model: FullModel, tx: number, ty: number, tz: number, sx: number, sy: number, sz: number, rotation: number) {

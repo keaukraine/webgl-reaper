@@ -19,6 +19,7 @@ export declare class Renderer extends BaseRenderer {
     private textureDisplacement;
     private textureDust;
     private textureSmoke;
+    private textureParticleGlow;
     private textureBody;
     private textureCloth;
     private textureEyes;
@@ -44,6 +45,7 @@ export declare class Renderer extends BaseRenderer {
     private shaderSky;
     private shaderDepthAnimated;
     private shaderVignette;
+    private shaderPointSpriteGlow;
     private textureOffscreenColor;
     private textureOffscreenDepth;
     private fboOffscreen;
@@ -138,11 +140,13 @@ export declare class Renderer extends BaseRenderer {
     private drawParticles;
     private drawGhosts;
     private drawDust;
+    private drawGlow;
     private drawAnimated;
     private clamp;
     private randomizeCamera;
     private randomizeLightning;
     private drawPointSpritesVBOTranslatedRotatedScaled;
+    private drawGlowSpritesVBOTranslatedRotatedScaled;
     private drawDiffuseVBOFacingCamera;
     private calculateMVPMatrixForSprite;
     private resetMatrixRotations;

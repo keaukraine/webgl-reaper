@@ -1,3 +1,5 @@
+
+(function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(window.document);
 class FullScreenUtils {
     /** Enters fullscreen. */
     enterFullScreen() {
@@ -1697,6 +1699,7 @@ class DiffuseShader extends BaseShader {
         renderer.checkGlError("DiffuseShader glDrawElements");
     }
 }
+//# sourceMappingURL=webgl-framework.es6.js.map
 
 /**
  * Common utilities
@@ -2486,6 +2489,7 @@ class DiffuseColoredShader extends DiffuseShader {
         super.drawModel(renderer, model, tx, ty, tz, rx, ry, rz, sx, sy, sz);
     }
 }
+//# sourceMappingURL=DiffuseColoredShader.js.map
 
 class BendShader extends DiffuseShader {
     constructor() {
@@ -2549,12 +2553,14 @@ class BendShader extends DiffuseShader {
         super.drawModel(renderer, model, tx, ty, tz, rx, ry, rz, sx, sy, sz);
     }
 }
+//# sourceMappingURL=BendShader.js.map
 
 var CameraMode;
 (function (CameraMode) {
     CameraMode[CameraMode["Rotating"] = 0] = "Rotating";
     CameraMode[CameraMode["Random"] = 1] = "Random";
 })(CameraMode || (CameraMode = {}));
+//# sourceMappingURL=CameraMode.js.map
 
 class CameraPositionInterpolator {
     constructor() {
@@ -2641,6 +2647,7 @@ class CameraPositionInterpolator {
         translate(this.matrix, this.matrix, [-this._cameraPosition[0], -this._cameraPosition[1], -this._cameraPosition[2]]);
     }
 }
+//# sourceMappingURL=CameraPositionInterpolator.js.map
 
 class DiffuseAlphaShader extends DiffuseShader {
     fillCode() {
@@ -2662,6 +2669,7 @@ class DiffuseAlphaShader extends DiffuseShader {
         this.sAlphaTexture = this.getUniform("sAlphaTexture");
     }
 }
+//# sourceMappingURL=DiffuseAlphaShader.js.map
 
 class DiffuseAnimatedTextureShader extends DiffuseShader {
     // Attributes are numbers.
@@ -2717,6 +2725,7 @@ class DiffuseAnimatedTextureShader extends DiffuseShader {
         renderer.checkGlError("DiffuseShader glDrawElements");
     }
 }
+//# sourceMappingURL=DiffuseAnimatedTextureShader.js.map
 
 class DiffuseAnimatedTextureChunkedShader extends DiffuseAnimatedTextureShader {
     // Attributes are numbers.
@@ -2770,6 +2779,7 @@ class DiffuseAnimatedTextureChunkedShader extends DiffuseAnimatedTextureShader {
         this.uTexelHeight = this.getUniform("uTexelHeight");
     }
 }
+//# sourceMappingURL=DiffuseAnimatedTextureChunkedShader.js.map
 
 class TextureAnimationChunked {
     constructor(textureWidth, vertices, frames) {
@@ -2822,6 +2832,7 @@ class TextureAnimationChunked {
         return this.m_texelHeight * timer * (this.frames - 1) + this.m_texelHalfHeight;
     }
 }
+//# sourceMappingURL=TextureAnimationChunked.js.map
 
 class PointSpriteColoredShader extends BaseShader {
     fillCode() {
@@ -2856,6 +2867,7 @@ class PointSpriteColoredShader extends BaseShader {
         this.color = this.getUniform("color");
     }
 }
+//# sourceMappingURL=PointSpriteColoredShader.js.map
 
 class AtAnimatedTextureChunkedShader extends DiffuseAnimatedTextureChunkedShader {
     fillCode() {
@@ -2875,6 +2887,7 @@ class AtAnimatedTextureChunkedShader extends DiffuseAnimatedTextureChunkedShader
             "}";
     }
 }
+//# sourceMappingURL=AtAnimatedTextureChunkedShader.js.map
 
 class LitAnimatedTextureChunkedShader extends DiffuseAnimatedTextureChunkedShader {
     fillCode() {
@@ -2953,6 +2966,7 @@ class LitAnimatedTextureChunkedShader extends DiffuseAnimatedTextureChunkedShade
         this.uLightIntensity = this.getUniform("uLightIntensity");
     }
 }
+//# sourceMappingURL=LitAnimatedTextureChunkedShader.js.map
 
 class SoftDiffuseColoredShader extends DiffuseShader {
     fillCode() {
@@ -3004,6 +3018,7 @@ class SoftDiffuseColoredShader extends DiffuseShader {
         this.color = this.getUniform("color");
     }
 }
+//# sourceMappingURL=SoftDiffuseColoredShader.js.map
 
 class SoftDiffuseColoredAlphaShader extends SoftDiffuseColoredShader {
     fillCode() {
@@ -3046,6 +3061,7 @@ class SoftDiffuseColoredAlphaShader extends SoftDiffuseColoredShader {
         this.color = this.getUniform("color");
     }
 }
+//# sourceMappingURL=SoftDiffuseColoredAlphaShader.js.map
 
 class DiffuseAnimatedTextureChunkedColoredShader extends DiffuseAnimatedTextureChunkedShader {
     fillCode() {
@@ -3066,6 +3082,7 @@ class DiffuseAnimatedTextureChunkedColoredShader extends DiffuseAnimatedTextureC
         this.uColor = this.getUniform("uColor");
     }
 }
+//# sourceMappingURL=DiffuseAnimatedTextureChunkedColoredShader.js.map
 
 class SkyShader extends DiffuseColoredShader {
     // Attributes are numbers.
@@ -3117,6 +3134,7 @@ class SkyShader extends DiffuseColoredShader {
         super.drawModel(renderer, model, tx, ty, tz, rx, ry, rz, sx, sy, sz);
     }
 }
+//# sourceMappingURL=SkyShader.js.map
 
 class DiffuseOneChannelShader extends DiffuseShader {
     fillCode() {
@@ -3131,6 +3149,7 @@ class DiffuseOneChannelShader extends DiffuseShader {
             }`;
     }
 }
+//# sourceMappingURL=DiffuseOneChannelShader.js.map
 
 class DepthAnimatedTextureChunkedShader extends BaseShader {
     fillCode() {
@@ -3199,6 +3218,7 @@ class DepthAnimatedTextureChunkedShader extends BaseShader {
         renderer.checkGlError("DiffuseShader glDrawElements");
     }
 }
+//# sourceMappingURL=DepthAnimatedTextureChunkedShader.js.map
 
 class VertexVignetteShader extends BaseShader {
     fillCode() {
@@ -3244,6 +3264,85 @@ class VertexVignetteShader extends BaseShader {
         gl.uniformMatrix4fv(this.view_proj_matrix, false, renderer.getOrthoMatrix());
         gl.drawElements(gl.TRIANGLES, model.getNumIndices() * 3, gl.UNSIGNED_SHORT, 0);
         renderer.checkGlError("VertexVignetteShader glDrawElements");
+    }
+}
+//# sourceMappingURL=VertexVignetteShader.js.map
+
+// import { FogShader } from "./FogShader";
+class PointSpriteGlowShader extends DiffuseShader {
+    fillCode() {
+        super.fillCode();
+        this.vertexShaderCode = `#version 300 es
+            precision highp float;
+
+            uniform mat4 view_proj_matrix;
+            uniform mat4 view_matrix;
+            // uniform mat4 model_matrix;
+            // out vec2 vTexCoord;
+
+            in vec2 rm_TexCoord0;
+            in vec4 rm_Vertex;
+
+            ${ /*FogShader.FOG_VERTEX_UNIFORMS_VARYINGS*/""}
+
+            void main(void) {
+                gl_Position = view_proj_matrix * rm_Vertex;
+
+                vec3 ndc = gl_Position.xyz / gl_Position.w; // perspective divide.
+                float zDist = 1.0 - ndc.z; // 1 is close (right up in your face,)
+                // gl_PointSize = 888.;
+                gl_PointSize = 888. * zDist;
+
+                ${ /*FogShader.FOG_VERTEX_MAIN*/""}
+            }`;
+        this.fragmentShaderCode = `#version 300 es
+            precision mediump float;
+            uniform sampler2D sTexture;
+            uniform vec4 color;
+
+            // in mediump vec2 vTexCoord;
+            out vec4 fragColor;
+
+            uniform vec2 uCameraRange;
+            uniform vec2 uInvViewportSize;
+            // uniform float uTransitionSize;
+            float calc_depth(in float z) {
+              return (2.0 * uCameraRange.x) / (uCameraRange.y + uCameraRange.x - z*(uCameraRange.y - uCameraRange.x));
+            }
+            uniform sampler2D sDepth;
+
+            const float ONE = 1.0;
+
+            ${ /*FogShader.FOG_FRAGMENT_UNIFORMS_VARYINGS*/""}
+
+            void main(void) {
+                vec2 coords = gl_FragCoord.xy * uInvViewportSize; // calculate depth texture coordinates
+                float geometryZ = calc_depth(texture(sDepth, coords).r); // lineriarize particle depth
+                float sceneZ = calc_depth(gl_FragCoord.z); // lineriarize scene depth
+                // float a = ONE - clamp(geometryZ - sceneZ, 0.0, 1.0); // linear clamped diff between scene and particle depth
+                // float a = ONE - clamp(geometryZ - sceneZ, 0.0, 1.0); // linear clamped diff between scene and particle depth
+                // float a = ONE - clamp(sceneZ - geometryZ, 0.0, 1.0); // linear clamped diff between scene and particle depth
+                // float a = ONE - clamp(geometryZ-sceneZ, 0.0, 1.0); // linear clamped diff between scene and particle depth
+                float a = ONE - (geometryZ-sceneZ); // linear clamped diff between scene and particle depth
+                // a = pow(a, .5);
+
+                ${ /*FogShader.FOG_AMOUNT_FRAGMENT*/""}
+                // vec4 diffuse = texture(sTexture, vTexCoord).rrrr * color;
+                vec4 diffuse = texture(sTexture, gl_PointCoord).rrrr * color;
+                fragColor = diffuse * a;
+
+                fragColor *= 0.0001; fragColor.r = a;
+                // fragColor *= 0.0001; fragColor.r = geometryZ;
+                // if(gl_PointCoord.x > 0.5 ) { fragColor *= 0.0001; fragColor.r = sceneZ; }
+            }`;
+    }
+    fillUniformsAttributes() {
+        super.fillUniformsAttributes();
+        // this.model_matrix = this.getUniform("model_matrix");
+        this.color = this.getUniform("color");
+        this.cameraRange = this.getUniform("uCameraRange");
+        this.sDepth = this.getUniform("sDepth");
+        this.invViewportSize = this.getUniform("uInvViewportSize");
     }
 }
 
@@ -3655,6 +3754,7 @@ class Renderer extends BaseRenderer {
         this.shaderSky = new SkyShader(this.gl);
         this.shaderDepthAnimated = new DepthAnimatedTextureChunkedShader(this.gl);
         this.shaderVignette = new VertexVignetteShader(this.gl);
+        this.shaderPointSpriteGlow = new PointSpriteGlowShader(this.gl);
     }
     async loadFloatingPointTexture(url, gl, width, height, minFilter = gl.LINEAR, magFilter = gl.LINEAR, clamp = false, type = "fp16") {
         const texture = gl.createTexture();
@@ -3714,7 +3814,8 @@ class Renderer extends BaseRenderer {
             this.loadFloatingPointTexture(`data/textures/anims/${this.currentAnimation}/cloth-positions.rgb.fp16`, this.gl, this.animationsCloth[this.currentAnimation].textureWidth, this.animationsCloth[this.currentAnimation].textureHeight, this.gl.NEAREST, this.gl.NEAREST, true),
             this.loadFloatingPointTexture(`data/textures/anims/${this.currentAnimation}/eyes.rgb.fp16`, this.gl, this.animationsEyes[this.currentAnimation].textureWidth, this.animationsEyes[this.currentAnimation].textureHeight, this.gl.NEAREST, this.gl.NEAREST, true),
             UncompressedTextureLoader.load("data/textures/eye_alpha.webp", this.gl),
-            UncompressedTextureLoader.load("data/textures/smoke.webp", this.gl)
+            UncompressedTextureLoader.load("data/textures/smoke.webp", this.gl),
+            UncompressedTextureLoader.load("data/textures/particle-glow.png", this.gl)
         ]);
         const [models, textures] = await Promise.all([promiseModels, promiseTextures]);
         [
@@ -3731,7 +3832,8 @@ class Renderer extends BaseRenderer {
             this.textureClothAnim,
             this.textureEyesAnim,
             this.textureEyes,
-            this.textureSmoke
+            this.textureSmoke,
+            this.textureParticleGlow
         ] = textures;
         this.gl.bindTexture(this.gl.TEXTURE_2D, this.textureBody);
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
@@ -3819,7 +3921,7 @@ class Renderer extends BaseRenderer {
             this.timerDustRotation = (timeNow % this.DUST_ROTATION_SPEED) / this.DUST_ROTATION_SPEED;
             this.timerDustFlickering = (timeNow % this.DUST_FLICKERING_SPEED) / this.DUST_FLICKERING_SPEED;
             const prevLightning = this.timerLightning;
-            this.timerCharacterAnimation = (timeNow % this.REAPER_ANIMATION_PERIOD) / this.REAPER_ANIMATION_PERIOD;
+            // this.timerCharacterAnimation = (timeNow % this.REAPER_ANIMATION_PERIOD) / this.REAPER_ANIMATION_PERIOD;
             this.timerSkyAnimation = (timeNow % this.SKY_ANIMATION_PERIOD) / this.SKY_ANIMATION_PERIOD;
             this.timerSmokeMovement = (timeNow % this.SMOKE_MOVEMENT_PERIOD) / this.SMOKE_MOVEMENT_PERIOD;
             this.timerSmokeRotation = (timeNow % this.SMOKE_ROTATION_PERIOD) / this.SMOKE_ROTATION_PERIOD;
@@ -3830,7 +3932,7 @@ class Renderer extends BaseRenderer {
             if (this.useLightning) {
                 this.timerLightning = (timeNow % this.LIGHTNING_PERIOD) / this.LIGHTNING_PERIOD;
             }
-            this.cameraPositionInterpolator.iterate(timeNow);
+            // this.cameraPositionInterpolator.iterate(timeNow);
             if (this.cameraPositionInterpolator.timer === 1.0) {
                 this.randomizeCamera();
             }
@@ -4033,6 +4135,9 @@ class Renderer extends BaseRenderer {
         this.drawGhosts();
         this.gl.blendFunc(this.gl.ONE, this.gl.ONE);
         this.drawDust(light);
+        this.gl.disable(this.gl.BLEND);
+        this.drawGlow(0.825);
+        this.gl.enable(this.gl.BLEND);
         this.gl.blendFunc(this.gl.DST_COLOR, this.gl.SRC_COLOR);
         this.gl.blendFunc(this.gl.ZERO, this.gl.SRC_COLOR);
         this.drawVignetteObject();
@@ -4123,6 +4228,22 @@ class Renderer extends BaseRenderer {
         this.gl.uniform4f(this.shaderPointSpriteColored.color, this.DUST_COLOR.r * flickering4 + colorR, this.DUST_COLOR.g * flickering4 + colorG, this.DUST_COLOR.b * flickering4 + colorB, this.DUST_COLOR.a);
         this.drawPointSpritesVBOTranslatedRotatedScaled(this.shaderPointSpriteColored, this.fmDust, 2, -2, 14, -a, -a, b, this.DUST_SCALE, this.DUST_SCALE, this.DUST_SCALE);
     }
+    drawGlow(lightIntensity) {
+        if (this.shaderPointSpriteGlow === undefined) {
+            return;
+        }
+        this.shaderPointSpriteGlow.use();
+        this.setTexture2D(0, this.textureParticleGlow, this.shaderPointSpriteGlow.sTexture);
+        // this.gl.uniform1f(this.shaderPointSpriteColored.uThickness!, this.dustSpriteSize);
+        this.gl.uniform2f(this.shaderPointSpriteGlow.cameraRange, this.Z_NEAR, this.Z_FAR); // near and far clipping planes
+        this.gl.uniform2f(this.shaderPointSpriteGlow.invViewportSize, 1.0 / this.gl.canvas.width, 1.0 / this.gl.canvas.height); // inverted screen size
+        this.setTexture2D(2, this.textureOffscreenDepth, this.shaderPointSpriteGlow.sDepth);
+        const colorR = 0;
+        const colorG = 1 * lightIntensity;
+        const colorB = 0;
+        this.gl.uniform4f(this.shaderPointSpriteGlow.color, colorR, colorG, colorB, 1);
+        this.drawGlowSpritesVBOTranslatedRotatedScaled(this.shaderPointSpriteGlow, this.fmDust, 3.14, 3.0, 15, 0, 0, 0, 0, 0, 0);
+    }
     drawAnimated(shader, timer, animation, model, textureAnimation, animationTextureWidth = this.ANIMATION_TEXTURE_WIDTH, animationType = "animateStartEndStart") {
         this.gl.uniform1i(shader.uTextureWidthInt, animationTextureWidth);
         this.setTexture2D(0, textureAnimation, shader.sPositions);
@@ -4135,6 +4256,7 @@ class Renderer extends BaseRenderer {
     }
     randomizeCamera() {
         this.currentRandomCamera = (this.currentRandomCamera + 1 + Math.trunc(Math.random() * (this.CAMERAS.length - 2))) % this.CAMERAS.length;
+        this.currentRandomCamera = 4; //(this.currentRandomCamera + 1 + Math.trunc(Math.random() * (this.CAMERAS.length - 2))) % this.CAMERAS.length;
         this.cameraPositionInterpolator.speed = this.CAMERA_SPEED * this.CAMERAS[this.currentRandomCamera].speedMultiplier;
         this.cameraPositionInterpolator.position = this.CAMERAS[this.currentRandomCamera];
         this.cameraPositionInterpolator.reset();
@@ -4149,6 +4271,15 @@ class Renderer extends BaseRenderer {
         this.calculateMVPMatrix(tx, ty, tz, rx, ry, rz, sx, sy, sz);
         this.gl.uniformMatrix4fv(shader.uMvp, false, this.mMVPMatrix);
         this.gl.drawElements(this.gl.POINTS, model.getNumIndices() * 3, this.gl.UNSIGNED_SHORT, 0);
+    }
+    drawGlowSpritesVBOTranslatedRotatedScaled(shader, model, tx, ty, tz, rx, ry, rz, sx, sy, sz) {
+        model.bindBuffers(this.gl);
+        this.gl.enableVertexAttribArray(shader.rm_Vertex);
+        this.gl.vertexAttribPointer(shader.rm_Vertex, 3, this.gl.FLOAT, false, 4 * (3 + 2), 0);
+        this.calculateMVPMatrix(tx, ty, tz, rx, ry, rz, sx, sy, sz);
+        this.gl.uniformMatrix4fv(shader.view_proj_matrix, false, this.mMVPMatrix);
+        // this.gl.drawElements(this.gl.POINTS, model.getNumIndices() * 3, this.gl.UNSIGNED_SHORT, 0);
+        this.gl.drawElements(this.gl.POINTS, 1 * 3, this.gl.UNSIGNED_SHORT, 0);
     }
     drawDiffuseVBOFacingCamera(shader, model, tx, ty, tz, sx, sy, sz, rotation) {
         model.bindBuffers(this.gl);
@@ -4328,6 +4459,7 @@ class FpsCamera {
         }
     }
 }
+//# sourceMappingURL=FpsCamera.js.map
 
 var MovementMode;
 (function (MovementMode) {
@@ -4379,6 +4511,7 @@ class FreeMovement {
     }
     ;
 }
+//# sourceMappingURL=FreeMovement.js.map
 
 function ready(fn) {
     if (document.readyState !== "loading") {
@@ -4420,4 +4553,5 @@ ready(() => {
     });
     canvas.addEventListener("click", () => renderer.changeScene());
 });
+//# sourceMappingURL=index.js.map
 //# sourceMappingURL=index.js.map
